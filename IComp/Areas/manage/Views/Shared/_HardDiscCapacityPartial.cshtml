@@ -1,0 +1,5 @@
+﻿@model HardDiscPostDto
+
+<label asp-for="HDDCapacityId">ProcessorSerie</label>
+<select class="form-control" asp-for="HDDCapacityId" asp-items="@new SelectList(ViewBag.Capacity,nameof(HDDCapacity.Id),nameof(HDDCapacity.Capacity))">
+</select>

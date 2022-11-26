@@ -1,0 +1,37 @@
+﻿@model List<ProductComment>
+
+
+
+@foreach (var item in Model)
+{
+
+    <div class="container py-4">
+        <div class="ex1 row">
+
+            <div class="col">
+                <div class="card h-100 card-review">
+                    <div class="card-header pb-0 d-flex flex-row justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img width="20" class="rounded-circle me-2"
+                             src="https://via.placeholder.com/256/fe669e/fff.png" />
+                            <div class="d-flex flex-column justify-content-center align-items-start fs-5 lh-sm">
+                                <b class="text-primary">@item.AppUser?.FullName</b>
+                                <b class="text-primary">@item.Name</b>
+                                <small class="text-muted">@item.CreatedAt</small>
+                            </div>
+                        </div>
+                        <span class="fs-1 my-0 fw-bolder @(item.Rate >= 4 ? "text-success" : item.Rate == 3 ? "text-warning" : "text-danger")">@item.Rate</span>
+                    </div>
+                    <div class="card-body py-2">
+                        <p class="card-text">@item.Text</p>
+                    </div>
+                    
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+

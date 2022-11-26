@@ -1,0 +1,31 @@
+﻿@model SSD
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1>Create</h1>
+            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="ModelName">Model</label>
+                    <input type="text" asp-for="ModelName" class="form-control" placeholder="Enter Title">
+                    <span class="text-danger" asp-validation-for="ModelName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsAvailable">IsAvailable</label>
+                    <input class="form-control" asp-for="IsAvailable" placeholder="Enter SubTitle">
+                    <span class="text-danger" asp-validation-for="IsAvailable"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SSDCapacityID">ProcessorSerie</label>
+                    <select class="form-control" asp-for="SSDCapacityID" asp-items="@new SelectList(ViewBag.CapacitySSD,nameof(SSDCapacity.Id),nameof(SSDCapacity.Capacity))">
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,49 @@
+﻿@model ContactUsViewModel
+@{
+    ViewData["Title"] = "Icomp ContactUs";
+}
+
+<section id="contact-us">
+    <div class="container">
+        <div class="breadcrumb">
+            <ul class="breadcrumb-nav">
+                <li class="nav-item"><a asp-action="index" asp-controller="home">Kompüter mağazası "iComp"</a></li>
+                <li class="nav-item"><span class="breadcrumb-arrow">></span><a asp-action="contactus" asp-controller="account">Əlaqə</a></li>
+
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <h1>Ünvan və Əlaqə</h1>
+                <div class="contact-us-content">
+
+                    <form asp-action="contactus" asp-controller="account" method="post">
+                        <div class="form-group mb-3">
+                            <label asp-for="Name">Adınız</label>
+                            <input type="text" asp-for="Name" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Email">Email address</label>
+                            <input type="email" asp-for="Email" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Text">Mətninizi daxil edin</label>
+                            <textarea asp-for="Text" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-dark mb-3">Mesajınızı göndərin</button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3039.3099787641518!2d49.841855!3d40.379822!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc7662196e01d13fe!2siComp.az!5e0!3m2!1sen!2sua!4v1649611397767!5m2!1sen!2sua" style="border:0; width: 100%; height: 80vh;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+</section>
+

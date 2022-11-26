@@ -1,0 +1,494 @@
+﻿@using System.Globalization
+@model ProductViewModel
+@{
+    ViewData["Title"] = " «Xceptional» ";
+    NumberFormatInfo nfi = new NumberFormatInfo();
+    var filterMax = ViewBag.FilterMaxPrice;
+
+    filterMax = filterMax.ToString("0.00", nfi);
+
+    var temp = -1;
+    if (Model.Paginated.PageIndex == 1)
+    {
+        temp = 0;
+    }
+    if (temp == Model.Paginated.TotalPage)
+    {
+        temp = -2;
+    }
+    nfi.NumberDecimalSeparator = ".";
+    nfi.CurrencyDecimalDigits = 2;
+    var filterMin = ViewBag.FilterMinPrice;
+   
+    filterMin = filterMin.ToString("0.00", nfi);
+
+
+}
+
+<main>
+    <!-- Home Page -->
+    <section id="main-home-page">
+        <div class="contentWrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <ul class="breadcrumb-nav">
+                        <li class="nav-item"><a asp-action="index" asp-controller="home"> "Xceptional"</a></li>
+                        @if (ViewBag.categoryid != null)
+                        {
+                            <li class="nav-item"><span class="breadcrumb-arrow">></span><a asp-action="index" asp-controller="catalog" asp-route-categoryid="@ViewBag.categoryid" asp-route-brandid="">@ViewBag.CategoryName</a></li>
+                        }
+                        @if (ViewBag.brandid != null)
+                        {
+                            <li class="nav-item"><span class="breadcrumb-arrow">></span><a asp-action="index" asp-controller="catalog" asp-route-brandid="@ViewBag.brandid">@ViewBag.BrandName</a></li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <!-- aside start -->
+                    <div class="col-lg-3 col-md-12">
+                        <!-- Filter -->
+                        <div class="main-home-page__filter">
+                            <h3 style="margin-bottom: 20px;">Filter</h3>
+                            <div class="main-home-page__filter-box">
+                                <div class="filter-item">
+                                    <div class="filter-item__price">
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <div id="slider-range" class="price-filter-range" name="rangeInput">
+                                                </div>
+
+                                                <div style="margin:30px auto">
+                                                    <input type="number" min=@(Model.MinPrice.ToString("0.00", nfi)) max="@(Model.MaxPrice.ToString("0.00", nfi))"
+                                                           oninput="validity.valid||(value='@(Model.MinPrice.ToString("0.00", nfi))');" name="minPrice" form="filterForm" id="min_price"
+                                                           class="price-range-field" />
+                                                    <input type="number" min=@(Model.MinPrice.ToString("0.00", nfi)) max="@(Model.MaxPrice.ToString("0.00", nfi))"
+                                                           oninput="validity.valid||(value='@(Model.MaxPrice.ToString("0.00", nfi))');" name="maxPrice" form="filterForm" id="max_price"
+                                                           class="price-range-field" />
+                                                </div>
+
+                                                <div id="searchResults" class="search-results-block"></div>
+
+                                                <div class="clear-fix"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-title">
+                                        <h2>TƏYİNAT</h2>
+                                        <i class="fa-solid fa-angle-down"></i>
+                                    </div>
+                                    <div class="filter-input">
+                                        @foreach (var item in Model.destinationGetDtos)
+                                        {
+                                            var prods = 0;
+                                            @foreach (var item2 in item.Products)
+                                            {
+                                                @if (item2.CategoryId == (ViewBag.categoryid ?? 0) || item2.BrandId == (ViewBag.brandid ?? 0))
+                                                {
+                                                    prods++;
+                                                }
+                                            }
+                                            <div class="input-block">
+                                                <input form="filterForm" type="radio" @(ViewBag.destinationid == item.Id ? "checked" : "") name="destinationid" value="@item.Id" id="destination-@item.Id">
+                                                <label for="destination-@item.Id">@item.Name <span>(@prods)</span></label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                @if (Model.motherBoardGetDtos.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>ANA PLATA</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.motherBoardGetDtos)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.Products)
+                                                {
+                                                    @if (item2.CategoryId == (ViewBag.categoryid ?? 0) || item2.BrandId == (ViewBag.brandid ?? 0))
+                                                    {
+                                                        prods++;
+                                                    }
+                                                }
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.motherboardid == item.Id ? "checked" : "") name="motherboardid" value="@item.Id" id="motherboard-@item.Id">
+                                                    <label for="motherboard-@item.Id">@item.ModelName <span>(@prods)</span></label>
+                                                </div>
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                }
+                                @if (Model.processorSerieGetDtos.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>PROSESSOR</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.processorSerieGetDtos)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.Processors)
+                                                {
+                                                    @foreach (var item3 in item2.Products)
+                                                    {
+                                                        @if (item3.CategoryId == (ViewBag.categoryid ?? 0) || item3.BrandId == (ViewBag.brandid ?? 0))
+                                                        {
+                                                            prods++;
+                                                        }
+                                                    }
+                                                }
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.processorserieid == item.Id ? "checked" : "") name="processorserieid" value="@item.Id" id="processor-@item.Id">
+                                                    <label for="processor-@item.Id">@item.Name <span>(@prods)</span></label>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                }
+                                @if (Model.mCapacityGetDtos.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>OPERATİV YADDAŞ (RAM)</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.mCapacityGetDtos)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.Memories)
+                                                {
+                                                    @foreach (var item3 in item2.Products)
+                                                    {
+                                                        @if (item3.CategoryId == (ViewBag.categoryid ?? 0) || item3.BrandId == (ViewBag.brandid ?? 0))
+                                                        {
+                                                            prods++;
+                                                        }
+                                                    }
+                                                }
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.memorycapacityid == item.Id ? "checked" : "") name="memorycapacityid" value="@item.Id" id="memory-@item.Id">
+                                                    <label for="memory-@item.Id">@item.Capacity <span>(@prods)</span></label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (Model.vCSerieGets.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>QRAFİK KART</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.vCSerieGets)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.VideoCards)
+                                                {
+                                                    @foreach (var item3 in item2.Products)
+                                                    {
+                                                        @if (item3.CategoryId == (ViewBag.categoryid ?? 0) || item3.BrandId == (ViewBag.brandid ?? 0))
+                                                        {
+                                                            prods++;
+                                                        }
+                                                    }
+                                                }
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.videocardserieid == item.Id ? "checked" : "") name="videocardserieid" value="@item.Id" id="vc-@item.Id">
+                                                    <label for="vc-@item.Id">@item.Name <span>(@prods)</span></label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                @if (Model.hardDiscCapacityGetDtos.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>HDD</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.hardDiscCapacityGetDtos)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.HardDiscs)
+                                                {
+                                                    @foreach (var item3 in item2.Products)
+                                                    {
+                                                        @if (item3.CategoryId == (ViewBag.categoryid ?? 0) || item3.BrandId == (ViewBag.brandid ?? 0))
+                                                        {
+                                                            prods++;
+                                                        }
+                                                    }
+                                                }
+
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.hddcapacityid == item.Id ? "checked" : "") name="hddcapacityid" value="@item.Id" id="hdd-@item.Id">
+                                                    <label for="hdd-@item.Id">@item.Capacity <span>(@prods)</span></label>
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (Model.SSDCapacities.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>SSD (SƏRT SƏTHLİ DİSK)</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.SSDCapacities)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.SSDs)
+                                                {
+                                                    @foreach (var item3 in item2.Products)
+                                                    {
+                                                        @if (item3.CategoryId == (ViewBag.categoryid ?? 0) || item3.BrandId == (ViewBag.brandid ?? 0))
+                                                        {
+                                                            prods++;
+                                                        }
+                                                    }
+                                                }
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.ssdcapacityid == item.Id ? "checked" : "") name="ssdcapacityid" value="@item.Id" id="ssd-@item.Id">
+                                                    <label for="ssd-@item.Id">@item.Capacity <span>(@prods)</span></label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="filter-item">
+                                    <div class="filter-title">
+                                        <h2>Brands</h2>
+                                        <i class="fa-solid fa-angle-down"></i>
+
+                                    </div>
+                                    <div class="filter-input">
+                                        @foreach (var item in Model.brandGetDtos)
+                                        {
+                                            var prods = 0;
+                                            @foreach (var item2 in item.Products)
+                                            {
+
+                                                @if (@item2.CategoryId == ViewBag.categoryid)
+                                                {
+                                                    prods++;
+                                                }
+                                                else if (ViewBag.Categoryid == null)
+                                                {
+                                                    prods++;
+                                                }
+                                            }
+                                            <div class="input-block">
+                                                <input form="filterForm" type="radio" @(ViewBag.brandid == item.Id ? "checked" : "") name="brandid" value="@item.Id" id="brand-@item.Id">
+                                                <label for="brand-@item.Id">@item.Name <span>(@prods)</span></label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                @if (Model.Softwares.Count != 0)
+                                {
+                                    <div class="filter-item">
+                                        <div class="filter-title">
+                                            <h2>Əməliyyat Sistemi</h2>
+                                            <i class="fa-solid fa-angle-down"></i>
+
+                                        </div>
+                                        <div class="filter-input">
+                                            @foreach (var item in Model.Softwares)
+                                            {
+                                                var prods = 0;
+                                                @foreach (var item2 in item.Products)
+                                                {
+                                                    @if (item2.CategoryId == (ViewBag.categoryid ?? 0) || item2.BrandId == (ViewBag.brandid ?? 0))
+                                                    {
+                                                        prods++;
+                                                    }
+                                                }
+                                                <div class="input-block">
+                                                    <input form="filterForm" type="radio" @(ViewBag.softwareid == item.Id ? "checked" : "") name="softwareid" value="@item.Id" id="software-@item.Id">
+                                                    <label for="software-@item.Id">@item.Name <span>(@prods)</span></label>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                }
+                                <div class="filter-item" style="display:flex; justify-content:space-between;">
+                                    <form id="filterForm" asp-action="Index" asp-controller="Catalog" method="get">
+                                        <input type="hidden" name="page" value="@Model.Paginated.PageIndex" />
+                                        <input type="hidden" name="categoryid" value="@ViewBag.categoryid" />
+                                        <button type="submit" class="btn btn-primary filter-btn">Filter</button>
+                                    </form>
+                                    <form id="cleanForm" asp-action="Index" asp-controller="Catalog" method="get">
+                                        <input type="hidden" name="page" value="@Model.Paginated.PageIndex" />
+                                        <input type="hidden" name="categoryid" value="@ViewBag.categoryid" />
+                                        @if (ViewBag.categoryid == null)
+                                        {
+                                            <input type="hidden" name="brandid" value="@ViewBag.brandid" />
+                                        }
+                                        <button type="submit" class="btn btn-primary filter-btn">Təmizləmək</button>
+                                    </form>
+                                </div>
+                                <!-- sidebar area end -->
+                            </div>
+                        </div>
+
+
+                        <!-- Popular Brends -->
+                      
+                    </div>
+                    <!-- aside end -->
+
+                    <div class="col-lg-9 col-md-12">
+
+
+                        <!-- New Products start here  -->
+                        <div class="new-products">
+                            <div class="content-heading">
+                                @if (@ViewBag.CategoryName != null)
+                                {
+                                    <h2>@ViewBag.CategoryName</h2>
+                                }
+                                else if (@ViewBag.BrandName != null)
+                                {
+                                    <h2>@ViewBag.BrandName</h2>
+                                }
+                            </div>
+
+                            
+
+                            <div class="paginatoin-area ">
+                                <ul class="pagination-box">
+
+                                    @if (Model.Paginated.HasPrev)
+                                    {
+                                        <li>
+                                            <a class="Previous" asp-action="index" asp-route-softwareid="@ViewBag.softwareid" asp-route-minprice="@filterMin" asp-route-maxprice="@filterMax" asp-route-page="@(Model.Paginated.PageIndex - 1)" asp-route-processorserieid="@ViewBag.processorserieid" asp-route-videocardserieid="@ViewBag.videocardserieid" asp-route-motherboardid="@ViewBag.motherboardid" asp-route-prodtypeid="@ViewBag.prodtypeid" asp-route-memorycapacityid="@ViewBag.memorycapacityid" asp-route-brandid="@ViewBag.brandid" asp-route-destinationid="@ViewBag.destinationid" asp-route-categoryid="@ViewBag.categoryid" asp-route-hddcapacityid="@ViewBag.hddcapacityid" asp-route-ssdcapacityid="@ViewBag.ssdcapacityid" asp-route-sort="@ViewBag.sort"><i class="fa-solid fa-chevron-left"></i></a>
+                                        </li>
+                                    }
+                                    @for (var i = 1; i <= 3; i++, temp++)
+                                    {
+                                        if ((Model.Paginated.PageIndex + temp) != 0 && (Model.Paginated.PageIndex + temp) != -1)
+                                        {
+                                            <li class="@(Model.Paginated.PageIndex + temp == Model.Paginated.PageIndex ? "active" : "" )"><a asp-action="index" asp-route-softwareid="@ViewBag.softwareid" asp-route-minprice="@filterMin" asp-route-maxprice="@filterMax" asp-route-page="@i" asp-route-processorserieid="@ViewBag.processorserieid" asp-route-videocardserieid="@ViewBag.videocardserieid" asp-route-motherboardid="@ViewBag.motherboardid" asp-route-prodtypeid="@ViewBag.prodtypeid" asp-route-memorycapacityid="@ViewBag.memorycapacityid" asp-route-brandid="@ViewBag.brandid" asp-route-destinationid="@ViewBag.destinationid" asp-route-categoryid="@ViewBag.categoryid" asp-route-hddcapacityid="@ViewBag.hddcapacityid" asp-route-ssdcapacityid="@ViewBag.ssdcapacityid" asp-route-sort="@ViewBag.sort" style="display:@((Model.Paginated.PageIndex+temp)>Model.Paginated.TotalPage?"none":"block")">@(Model.Paginated.PageIndex+temp)</a></li>
+                                        }
+                                    }
+                                    @if (Model.Paginated.HasNext)
+                                    {
+                                        <li><a class="Next" asp-action="index" asp-route-softwareid="@ViewBag.softwareid" asp-route-minprice="@filterMin" asp-route-maxprice="@filterMax" asp-route-page="@(Model.Paginated.PageIndex + 1)" asp-route-processorserieid="@ViewBag.processorserieid" asp-route-videocardserieid="@ViewBag.videocardserieid" asp-route-motherboardid="@ViewBag.motherboardid" asp-route-prodtypeid="@ViewBag.prodtypeid" asp-route-memorycapacityid="@ViewBag.memorycapacityid" asp-route-brandid="@ViewBag.brandid" asp-route-destinationid="@ViewBag.destinationid" asp-route-categoryid="@ViewBag.categoryid" asp-route-hddcapacityid="@ViewBag.hddcapacityid" asp-route-ssdcapacityid="@ViewBag.ssdcapacityid" asp-route-sort="@ViewBag.sort"><i class="fa-solid fa-chevron-right"></i></a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="new-products-inner">
+                                <div class="row">
+                                    @foreach (var item in Model.Paginated.Items)
+                                    {
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="new-products__item">
+                                                <div class="new-products__item-card">
+                                                    <div class="item__card-header">
+                                                        <div class="product-photo">
+                                                            <img src="~/uploads/products/@item.ProductImages.FirstOrDefault(x => x.PosterStatus == true)?.Image" alt="">
+                                                        </div>
+                                                        <div class="product-title">
+                                                            <a asp-action="index" asp-controller="detail" asp-route-id="@item.Id">@item.Name</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item__card-body">
+                                                        <div class="product-desc text">
+                                                            <p>
+                                                                @(item.Processor?.ProcessorSerie?.Name == null ? "" : item.Processor?.ProcessorSerie?.Name + "|")  @(item.ProdMemory?.MemoryCapacity?.Capacity == null ? "" : item.ProdMemory?.MemoryCapacity?.Capacity + "|") @(item.ProdMemory?.DDRType == null ? "" : item.ProdMemory?.DDRType + "|") @(item.SSD?.SSDCapacity?.Capacity == null? "" : item.SSD?.SSDCapacity?.Capacity + "SSD |")  @(item.HardDisc?.HDDCapacity?.Capacity == null? "" : item.HardDisc?.HDDCapacity?.Capacity + "HDD |")  @(item.Processor?.ModelName == null ? "" : item.Processor?.ModelName + "|")
+                                                                @(item.VideoCard?.CoreSpeed == null ? "" : item.VideoCard?.CoreSpeed + "|") @(item.VideoCard?.MemoryCapacity==null? "" : item.VideoCard?.MemoryCapacity + "|") @(item.VideoCard?.VideoCardSerie?.Name==null? "" : item.VideoCard?.VideoCardSerie?.Name + " series |")  @(item.GraphCard == null ? "" : item.GraphCard + "|") @(item.MotherBoardSound == null ? "" : item.MotherBoardSound+ "|") @(item.Network == null ? "" : item.Network + "|")
+                                                            </p>
+                                                        </div>
+                                                        <div class="product-price">
+
+                                                            <span style="font-size:17px; display: inline-block;">@((item.DiscountPercent > 0 ? item.SalePrice*(1- item.DiscountPercent/100) : item.SalePrice).ToString("0.00"))<sup>azn</sup></span>
+                                                            @if (item.DiscountPercent > 0)
+                                                            {
+                                                                <span style="text-decoration: line-through; color: #bab9b9; font-size:17px;display: inline-block;">@(item.SalePrice.ToString("0.00")) <sup>azn</sup></span>
+                                                            }
+                                                            <h6>Stokda : <span class="@(item.IsAvailable == true ? "text-success" : "text-danger")">@(item.IsAvailable == true ? "Var" : "Yox")</span></h6>
+                                                        </div>
+                                                        <div class="product-checkout">
+                                                            <a asp-action="addbasket" asp-controller="catalog" asp-route-id="@item.Id" class="btn btn-primary add-to-basket">Səbətə</a>
+        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!-- New Products end here  -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+@section Scripts{
+<script>
+    $(document).ready(function () {
+
+        $(function () {
+        $("#slider-range").slider({
+            range: true,
+            orientation: "horizontal",
+            min: @(Model.MinPrice.ToString("0.00", nfi)),
+            max: @(Model.MaxPrice.ToString("0.00", nfi)),
+            values: [@(filterMin), @(filterMax)],
+            //   step: 100,
+
+            slide: function (event, ui) {
+                if (ui.values[0] == ui.values[1]) {
+                    return false;
+                }
+
+                $("#min_price").val(ui.values[0]);
+                $("#max_price").val(ui.values[1]);
+            },
+        });
+
+
+        $("#min_price").val($("#slider-range").slider("values", 0));
+        $("#max_price").val($("#slider-range").slider("values", 1));
+
+    });
+
+    })
+</script>
+}

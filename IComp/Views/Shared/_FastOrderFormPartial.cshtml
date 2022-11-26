@@ -1,0 +1,26 @@
+﻿@model Order
+
+<form id="fastOrder" method="post" asp-action="createfastorder" asp-controller="order" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="FullName">Ad, Soyad</label>
+        <input type="text" asp-for="FullName" id="fast-order-fullname" class="form-control" placeholder="Ad, Soyad">
+        <span class="text-danger" asp-validation-for="FullName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input type="text" asp-for="Email" id="fast-order-mail" class="form-control" placeholder="Email daxil et">
+        <span class="text-danger" asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone">Əlaqə nömrəsi</label>
+        <input type="text" asp-for="Phone" id="fast-order-phone" class="form-control" placeholder="Əlaqə nömrəsi">
+        <span class="text-danger" asp-validation-for="Phone"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address">Adres</label>
+        <input type="text" asp-for="Address" id="fast-order-adress" class="form-control" placeholder="Adres">
+        <span class="text-danger" asp-validation-for="Address"></span>
+    </div>
+    <div style="width:100%;" class="err-msg-box text-danger"></div>
+   <button type="submit" class="checkout order-button">Sifariş</button> 
+</form>

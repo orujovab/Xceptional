@@ -1,0 +1,17 @@
+﻿@model List<Product>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <a asp-action="index" asp-controller="detail" asp-route-id="@item.Id">
+        <li class="search-item">
+            <img src="~/uploads/products/@item.ProductImages.FirstOrDefault(x => x.PosterStatus == true)?.Image" alt="">
+            <p style="width:300px; color:black;">@item.Name</p>
+            <p style="color:black;">@item.SalePrice</p>
+        </li>
+        </a>
+
+    }
+        <a asp-action="SearchAll" asp-controller="catalog" asp-route-searchString="@ViewBag.Str" style="    display: block;
+    padding: 10px;">Bütün məhsulları gör</a>
+</ul>

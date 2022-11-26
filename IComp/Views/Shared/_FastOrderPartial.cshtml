@@ -1,0 +1,52 @@
+﻿@model FastCheckOutViewModel
+
+@{
+    var counter = 0;
+    decimal productTotalPrice = 0;
+    var item = Model.Product;
+}
+
+<div class="shopping-cart">
+
+    @{
+        productTotalPrice = item.Count * (item.DiscountPercent > 0 ? item.SalePrice * (1 - item.DiscountPercent / 100) : item.SalePrice);
+    }
+
+    <div class="product">
+        <div class="product-image-basket" style="width: 10%;">
+            <img style="width: 80%;" src="~/uploads/products/@item.ProductImages.FirstOrDefault(x => x.PosterStatus == true)?.Image">
+        </div>
+        <div class="product-details">
+            <div class="product-title">@item.Name</div>
+            <p class="product-description">
+                The best dog bones of all time. Holy crap. Your dog
+                will be begging for these things! I got curious once and ate one myself. I'm a
+                fan.
+            </p>
+        </div>
+        <div class="product-price-basket">price:  ₼@((item.DiscountPercent > 0 ?item.SalePrice*(1-item.DiscountPercent/100):item.SalePrice).ToString("0.00"))</div>
+        <div class="product-quantity">
+            <input type="number" form="fastOrder" name="ordercount" value="1" min="1" max="@item.Count">
+            <input type="hidden" form="fastOrder" name="prodcount" value="@item.Count">
+            <input type="hidden" value="@item.Id">
+
+        </div>
+        
+        <div class="product-line-price">@((item.DiscountPercent > 0 ?item.SalePrice*(1-item.DiscountPercent/100):item.SalePrice).ToString("0.00"))</div>
+    </div>
+    <input type="hidden" value="@counter" id="basket-count" />
+
+
+    <div class="totals">
+        <div class="totals-item totals-item-total">
+            <label>Total</label>
+            <div class="totals-value" id="cart-total">@((item.DiscountPercent > 0 ?item.SalePrice*(1-item.DiscountPercent/100):item.SalePrice).ToString("0.00"))</div>
+        </div>
+    </div>
+
+
+
+</div>
+
+@(await Html.PartialAsync("_FastOrderFormPartial", Model.Order))
+<input form="fastOrder" type="hidden" name="productid" value="@item.Id" />

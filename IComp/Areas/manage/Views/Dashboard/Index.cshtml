@@ -1,0 +1,213 @@
+﻿@model DashboardViewModel
+@{
+    var cat = String.Empty;
+}
+
+<div class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 p-r-0 title-margin-right">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Hello, <span>Welcome Here</span></h1>
+                    </div>
+                </div>
+            </div>
+            <!-- /# column -->
+            <div class="col-lg-4 p-l-0 title-margin-left">
+                <div class="page-header">
+                    <div class="page-title">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Home</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /# column -->
+        </div>
+        <!-- /# row -->
+        <section id="main-content">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib">
+                                <i class="ti-money color-success border-success"></i>
+                            </div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">Total Profit</div>
+                                <div class="stat-digit">@(Model.TotalProfit.ToString("0.00"))</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib">
+                                <i class="ti-user color-primary border-primary"></i>
+                            </div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">New Customer</div>
+                                <div class="stat-digit">@Model.NewCostumer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib">
+                                <i class="ti-money color-warning border-primary"></i>
+                            </div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">Total Sales</div>
+                                <div class="stat-digit">@(Model.TotalSales.ToString("0.00"))</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-link color-danger border-danger"></i></div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">Orders</div>
+                                <div class="stat-digit">@Model.OrderCount</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="bar"></div>
+                        </div>
+                    </div>
+                    <!-- /# card -->
+                </div>
+                <!-- /# column -->
+
+                <div class="col-lg-4">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <div id="donut-example"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-4 ">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="year-calendar"></div>
+                        </div>
+                    </div>
+                    <!-- /# card -->
+                </div>
+                <!-- /# column -->
+            </div>
+            <!-- /# row -->
+
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer">
+                        <p>2018 © Admin Board. - <a href="#">example.com</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts{
+
+<script>
+        Morris.Donut({
+      element: 'donut-example',
+      data: [
+        {label: "Accepted Orders", value: @Model.AcceptedOrders},
+        {label: "RejectedOrders", value: @Model.RejectedOrders},
+        {label: "Pending Orders", value: @Model.PendingOrders},
+        {label: "Canceled Orders", value: @Model.CanceledOrders}
+      ]
+    });
+
+</script>
+
+
+<script>
+                new Morris.Line({
+      // ID of the element in which to draw the chart.
+      element: 'myfirstchart',
+      // Chart data records -- each entry in this array corresponds to a point on
+      // the chart.
+      data: [
+        { year: '2008', value: 20 },
+        { year: '2009', value: 10 },
+        { year: '2010', value: 5 },
+        { year: '2011', value: 5 },
+        { year: '2012', value: 20 }
+      ],
+      // The name of the data record attribute that contains x-values.
+      xkey: 'year',
+      // A list of names of data record attributes that contain y-values.
+      ykeys: ['value'],
+      // Labels for the ykeys -- will be displayed when you hover over the
+      // chart.
+      labels: ['Value']
+    });
+</script>
+
+<script>
+
+        var day_data = [
+
+            @foreach (var item in Model.Orders)
+           {
+                @:{"period": @item.CreatedAt.ToString("yyyy/MM/dd"), "licensed": 3407, "sorned": 5000},
+           }
+
+    ];
+
+    Morris.Line({
+      element: 'graph',
+      data: day_data,
+      xkey: 'period',
+      ykeys: ['licensed', 'sorned'],
+      labels: ['Licensed', 'SORN']
+    });
+</script>
+
+<script>
+    var prod_data = [
+                @foreach (var item in Model.Categories)
+               {
+                   cat = item.Name.ToLower().ToString();
+                   cat = cat.Replace("ü","u").Replace("ə","e").Replace("ö","o").Replace("ş","s").Replace("ç","c").Replace("ğ","h");
+
+                   @:{category: '@cat', ProductCount:@item.Products.Count},
+               }
+    ];
+
+    Morris.Bar({
+      element: 'bar',
+      data: prod_data,
+      xkey: 'category',
+      ykeys: ['ProductCount'],
+      labels: ['ProductCount'],
+      barRatio: 2,
+    xLabelAngle: 30,
+    hideHover: 'false'
+    });
+
+</script>
+
+}

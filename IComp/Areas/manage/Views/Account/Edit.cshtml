@@ -1,0 +1,54 @@
+﻿@model AdminEditViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/manage/assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/manage/assets/css/util.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/manage/assets/images/img-01.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form" asp-action="edit" method="post">
+                    <span class="login100-form-title">
+                        Admin Edit
+                    </span>
+
+                    
+
+                    <div class="wrap-input100 validate-input">
+                        <select style="width:100%;" class="form-control" asp-for="Roles" asp-items="@(new SelectList(Model.Roles))">
+                        </select>
+                        <span asp-validation-for="Roles"></span>
+
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn">
+                            Save
+                        </button>
+                    </div>
+
+                    <div asp-validation-summary="ModelOnly"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+

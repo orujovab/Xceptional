@@ -1,0 +1,252 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+@{
+    AppUser appUser = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        appUser = userManager.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+    }
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="~/assets/img/Icons/icompico.ico">
+
+    <title> Admin:  Admin Dashboard</title>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+    <!-- Styles -->
+    <link href="~/manage/assets/css/lib/calendar2/pignose.calendar.min.css" rel="stylesheet">
+    <link href="~/manage/assets/css/lib/chartist/chartist.min.css" rel="stylesheet">
+    <link href="~/manage/assets/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="~/manage/assets/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="~/manage/assets/css/lib/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/manage/assets/css/lib/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/manage/assets/css/lib/weather-icons.css" rel="stylesheet" />
+    <link href="~/manage/assets/css/lib/menubar/sidebar.css" rel="stylesheet">
+    <link href="~/manage/assets/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="~/manage/assets/css/lib/helper.css" rel="stylesheet">
+    <link href="~/manage/assets/css/style.css" rel="stylesheet">
+    <link href="~/manage/assets/css/login.css" rel="stylesheet">
+    <link href=~/manage/assets/css/toastr.css rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/manage/assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/manage/assets/css/util.css">
+</head>
+
+<body>
+    @if (TempData["Success"] != null)
+    {
+        <input type="hidden" id="success-toaster" value="@TempData["Success"]" />
+    }
+    @if (TempData["Warning"] != null)
+    {
+        <input type="hidden" id="warning-toaster" value="@TempData["Warning"]" />
+    }
+    @if (TempData["Info"] != null)
+    {
+        <input type="hidden" id="info-toaster" value="@TempData["Info"]" />
+    }
+    @if (TempData["Error"] != null)
+    {
+        <input type="hidden" id="error-toaster" value="@TempData["Error"]" />
+    }
+
+    <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
+        <div class="nano">
+            <div class="nano-content">
+                <ul>
+                    <div class="logo">
+                        <a asp-action="index" asp-controller="dashboard" asp-area="manage">
+                            <span>XCEPTIONAL</span>
+                        </a>
+                    </div>
+                    <li class="label">Main</li>
+                    <li class=""><a asp-action="index" asp-controller="Dashboard"><i class="ti-home"></i>Home</a></li>
+                    @if (appUser.UserName == "SuperAdmin")
+                    {
+                        <li class=""><a asp-action="userlist" asp-controller="account"><i class="ti-angle-right"></i>List of Admins</a></li>
+                    }
+                    <li class=""><a asp-action="index" asp-controller="Order"><i class="ti-angle-right"></i>Orders</a></li>
+                    <li class=""><a asp-action="index" asp-controller="Brand"><i class="ti-angle-right"></i>Brand</a></li>
+                    <li class=""><a asp-action="index" asp-controller="Category"><i class="ti-angle-right"></i>Category</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Color"><i class="ti-angle-right"></i>Color</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Destination"><i class="ti-angle-right"></i>Destination</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Harddisc"><i class="ti-angle-right"></i>Harddisc</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Memory"><i class="ti-angle-right"></i>Memory</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="MotherBoard"><i class="ti-angle-right"></i>MotherBoard</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Processor"><i class="ti-angle-right"></i>Processor</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="ProdType"><i class="ti-angle-right"></i>ProdType</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Product"><i class="ti-angle-right"></i>Product</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Setting"><i class="ti-angle-right"></i>Setting</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="Software"><i class="ti-angle-right"></i>Software</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="SSD"><i class="ti-angle-right"></i>SSD</a></li>
+                    <li class=" "><a asp-action="index" asp-controller="VideoCard"><i class="ti-angle-right"></i>VideoCard</a></li>
+
+
+                    <li><a asp-action="logout" asp-controller="account" asp-area="manage"><i class="ti-close"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /# sidebar -->
+
+    <div class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="float-left">
+                        <div class="hamburger sidebar-toggle">
+                            <span class="line"></span>
+                            <span class="line"></span>
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        
+                        <div class="dropdown dib">
+                            <div class="header-icon">
+                                @if (appUser != null)
+                                {
+                                    <a asp-action="profile" asp-controller="account" asp-area="manage">
+                                        <span class="user-avatar">
+                                            @appUser.FullName
+                                        </span>
+                                    </a>
+                                    <a asp-action="logout" asp-controller="account" asp-area="manage">
+                                        <i class="ti-power-off"></i>
+                                        Logout
+                                    </a>
+                                }
+
+                                <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right">
+                                    <div class="dropdown-content-heading">
+                                        <span class="text-left">Upgrade Now</span>
+                                        <p class="trial-day">30 Days Trail</p>
+                                    </div>
+                                    <div class="dropdown-content-body">
+                                        <ul>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="ti-user"></i>
+                                                    <span>Profile</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content-wrap">
+        @RenderBody()
+    </div>
+
+    <!-- jquery vendor -->
+    <script src="~/manage/assets/js/lib/jquery.min.js"></script>
+    <script src="~/manage/assets/js/lib/jquery.nanoscroller.min.js"></script>
+    <!-- nano scroller -->
+    <script src="~/manage/assets/js/lib/menubar/sidebar.js"></script>
+    @*<script src="~/manage/assets/js/lib/preloader/pace.min.js"></script>*@
+    <!-- sidebar -->
+
+    <script src="~/manage/assets/js/lib/bootstrap.min.js"></script>
+    <script src="~/manage/assets/js/scripts.js"></script>
+    <!-- bootstrap -->
+
+    <script src="~/manage/assets/js/lib/calendar-2/moment.latest.min.js"></script>
+    <script src="~/manage/assets/js/lib/calendar-2/pignose.calendar.min.js"></script>
+    <script src="~/manage/assets/js/lib/calendar-2/pignose.init.js"></script>
+
+    <script src="~/manage/assets/js/toastr.js"></script>
+    <script src="~/manage/assets/js/main.js"></script>
+
+
+    <script src="~/manage/assets/js/lib/weather/jquery.simpleWeather.min.js"></script>
+    <script src="~/manage/assets/js/lib/weather/weather-init.js"></script>
+    <script src="~/manage/assets/js/lib/circle-progress/circle-progress.min.js"></script>
+    <script src="~/manage/assets/js/lib/circle-progress/circle-progress-init.js"></script>
+    <script src="~/manage/assets/js/lib/chartist/chartist.min.js"></script>
+    <script src="~/manage/assets/js/lib/sparklinechart/jquery.sparkline.min.js"></script>
+    <script src="~/manage/assets/js/lib/sparklinechart/sparkline.init.js"></script>
+    <script src="~/manage/assets/js/lib/owl-carousel/owl.carousel.min.js"></script>
+    <script src="~/manage/assets/js/lib/owl-carousel/owl.carousel-init.js"></script>
+    <!-- scripit init-->
+    <script src="~/manage/assets/js/dashboard2.js"></script>
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        $(document).ready(function () {
+            if ($("#success-toaster").length) {
+                toastr["success"]($("#success-toaster").val());
+            }
+        });
+        $(document).ready(function () {
+            if ($("#warning-toaster").length) {
+                toastr["warning"]($("#warning-toaster").val());
+            }
+        });
+        $(document).ready(function () {
+            if ($("#info-toaster").length) {
+                toastr["info"]($("#info-toaster").val());
+            }
+        });
+        $(document).ready(function () {
+            if ($("#error-toaster").length) {
+                toastr["error"]($("#error-toaster").val());
+            }
+        });
+         
+
+    </script>
+
+</body>
+
+</html>

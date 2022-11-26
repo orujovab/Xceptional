@@ -1,0 +1,58 @@
+﻿@model ProductComment
+
+<form id="comment-form" asp-action="comment">
+    <div class="comment-title pg-b">
+        <h2>Yeni mesaj</h2>
+        <input asp-for="ProductId" type="hidden"/>
+    </div>
+    <div class="comment-rating pg-b">
+        <span>Məhsul reytinqi:</span>
+        <div class="rate-prod">
+            <div class="rate">
+                <input asp-for="Rate" type="radio" id="star5"
+                       value="5" checked="checked"/>
+                <label for="star5" title="text">
+                    5
+                    stars
+                </label>
+                <input asp-for="Rate" type="radio" id="star4"
+                       value="4" />
+                <label for="star4" title="text">
+                    4
+                    stars
+                </label>
+                <input asp-for="Rate" type="radio" id="star3"
+                       value="3" />
+                <label for="star3" title="text">
+                    3
+                    stars
+                </label>
+                <input asp-for="Rate" type="radio" id="star2"
+                       value="2" />
+                <label for="star2" title="text">
+                    2
+                    stars
+                </label>
+                <input asp-for="Rate" type="radio" id="star1"
+                       value="1" />
+                <label for="star1" title="text">
+                    1
+                    star
+                </label>
+            </div>
+        </div>
+        <div class="clear-fix"></div>
+    </div>
+    @if (!User.Identity.IsAuthenticated)
+   {
+    <div class="comment-input pg-b">
+        <input type="text" asp-for="Name" placeholder="Ad">
+    </div>
+   }
+    <div class="comment-textarea pg-b">
+        <textarea asp-for="Text" placeholder="Mesaj mətni" id="" cols="50" rows="10"></textarea>
+    </div>
+    <div class="comment-button pg-b">
+        <button type="submit" class="btn btn-primary">Mesaj əlavə etmək</button>
+    </div>
+</form>

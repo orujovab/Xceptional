@@ -1,0 +1,101 @@
+﻿@model PaginatedListDto<ProductListItemDto>
+@{
+    ViewData["Title"] = "Index";
+    int counter = (Model.PageIndex - 1) * 3;
+    var temp = -1;
+    if (Model.PageIndex == 1)
+    {
+        temp = 0;
+    }
+    if (temp == Model.TotalPage)
+    {
+        temp = -2;
+    }
+    var categories = ViewBag.Categories;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 d-flex justify-content-between">
+            <h3>Product</h3>
+            <form asp-action="index" method="get">
+                <button type="submit" class="btn btn-success">Təmizlə</button>
+            </form>
+            <form asp-action="index" method="get">
+                <select name="value">
+                    <!option @(ViewBag.CategoryId == null? "selected" : "" ) value="">None</!option>
+                    @foreach (var item in categories)
+                    {
+                        <!option @(ViewBag.CategoryId == item.Id ? "selected" : "") value="@item.Id">@item.Name</!option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-success">Filter</button>
+            </form>
+            <a asp-action="create" class="btn btn-primary">Create PC</a>
+        </div>
+        <div class="col-lg-12">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">ProductCount</th>
+                        <th scope="col">Image</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        counter++;
+                        <tr>
+                            <th scope="row">@counter</th>
+                            <td>@item.Name</td>
+                            <td>@item.Count</td>
+                            <td><img width="100" src="~/uploads/products/@item.ProductImages.FirstOrDefault(x=>x.PosterStatus==true)?.Image" /></td>
+                            <td>
+                            <td></td>
+                            <td>
+                                <a asp-action="edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                                <a asp-action="@(item.IsDeleted?"restore":"delete")" asp-route-id="@item.Id" class="btn btn-@(item.IsDeleted?"info restore-button":"danger remove-button") ">@(item.IsDeleted?"Restore":"Delete")</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    @if (Model.HasPrev)
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="index" asp-route-page="1" asp-route-value="@ViewBag.CategoryId">@("<<")</a></li>
+                        <li class="page-item"><a class="page-link" asp-action="index" asp-route-page="@(Model.PageIndex - 1)" asp-route-value="@ViewBag.CategoryId" >@("<")</a></li>
+                    }
+                    @for (int i = 1; i <= 3; i++, temp++)
+                    {
+                        if ((Model.PageIndex + temp) != 0 && (Model.PageIndex + temp) != -1)
+                        {
+                            <li class="page-item"><a class="page-link" asp-action="index" asp-route-page="@(Model.PageIndex+temp)" asp-route-value="@ViewBag.CategoryId"  style="display:@((Model.PageIndex+temp)>Model.TotalPage?"none":"block")">@(Model.PageIndex+temp)</a></li>
+                        }
+                    }
+                    @if (Model.HasNext)
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="index" asp-route-page="@(Model.PageIndex + 1)" asp-route-value="@ViewBag.CategoryId" >@(">")</a></li>
+                        <li class="page-item"><a class="page-link" asp-action="index" asp-route-page="@Model.TotalPage" asp-route-value="@ViewBag.CategoryId" >@(">>")</a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+        <h3>Create Pc Parts</h3>
+        <div class="col-lg-12 d-flex justify-content-between">
+            <a asp-action="CreateProcessor" asp-controller="ProductParts" class="btn btn-secondary">Create Processor</a>
+            <a asp-action="CreateMotherBoard" asp-controller="ProductParts" class="btn btn-success">Create Motherboard</a>
+            <a asp-action="CreateRam" asp-controller="ProductParts" class="btn btn-warning">Create Ram</a>
+            <a asp-action="CreateVideoCard" asp-controller="ProductParts" class="btn btn-info">Create VideoCard</a>
+            <a asp-action="CreateCooler" asp-controller="ProductParts" class="btn btn-dark">Create Cooler</a>
+            <a asp-action="CreateSSD" asp-controller="ProductParts" class="btn btn-primary">Create SSD</a>
+            <a asp-action="CreateHDD" asp-controller="ProductParts" class="btn btn-primary">Create HDD</a>
+        </div>
+    </div>
+</div>

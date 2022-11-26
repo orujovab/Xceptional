@@ -1,0 +1,78 @@
+﻿@model CommonBasketViewModel
+@{
+    var counter = 0;
+    decimal productTotalPrice = 0;
+}
+
+
+<div class="shopping-cart">
+    @foreach (var item in Model.BasketItems)
+    {
+        @if (item != null)
+        {
+
+            {
+                counter += item.Count;
+                productTotalPrice = item.Count * (item.Product.DiscountPercent > 0 ? item.Product.SalePrice * (1 - item.Product.DiscountPercent / 100) : item.Product.SalePrice);
+            }
+
+            <div class="product">
+                <div class="product-image-basket" style="width: 10%;">
+                    <img style="width: 80%;" src="~/uploads/products/@item.Product.ProductImages.FirstOrDefault(x => x.PosterStatus == true)?.Image">
+                </div>
+                <div class="product-details">
+                    <div class="product-title"><a asp-action="index" asp-controller="detail" asp-route-id="@item.Product.Id" class="text-dark">@item.Product.Name</a></div>
+                    <p class="product-description">
+                        @(item.Product.Processor?.ProcessorSerie?.Name == null ? "" : item.Product.Processor?.ProcessorSerie?.Name + "|")  @(item.Product.ProdMemory?.MemoryCapacity?.Capacity == null ? "" : item.Product.ProdMemory?.MemoryCapacity?.Capacity + "|") @(item.Product.ProdMemory?.DDRType == null ? "" : item.Product.ProdMemory?.DDRType + "|") @(item.Product.SSD?.SSDCapacity?.Capacity == null? "" : item.Product.SSD?.SSDCapacity?.Capacity + "SSD |")  @(item.Product.HardDisc?.HDDCapacity?.Capacity == null? "" : item.Product.HardDisc?.HDDCapacity?.Capacity + "HDD |")  @(item.Product.Processor?.ModelName == null ? "" : item.Product.Processor?.ModelName + "|")
+                        @(item.Product.VideoCard?.CoreSpeed == null ? "" : item.Product.VideoCard?.CoreSpeed + "|") @(item.Product.VideoCard?.MemoryCapacity==null? "" : item.Product.VideoCard?.MemoryCapacity + "|") @(item.Product.VideoCard?.VideoCardSerie?.Name==null? "" : item.Product.VideoCard?.VideoCardSerie?.Name + " series |") @(item.Product.Network == null ? "" : item.Product.Network + "|")
+                    </p>
+                </div>
+                <div class="product-price-basket">price:  ₼@((item.Product.DiscountPercent > 0 ?item.Product.SalePrice*(1-item.Product.DiscountPercent/100):item.Product.SalePrice).ToString("0.00"))</div>
+                @if (item.Product.IsDeleted == false)
+                {
+                    <div class="product-quantity">
+                        <input type="number" value="@item.Count" min="1" class="change-val">
+                        <input type="hidden" value="@item.Count" class="current-val">
+                        <input type="hidden" value="@item.Product.Id" class="product-Id">
+
+                    </div>
+                    <div class="product-removal">
+                        <a asp-action="deleteprodfrombasket" asp-controller="catalog" asp-route-id="@item.Product.Id" class="remove-product">
+                            Remove
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <span class="text-danger product-quantity">Bu məhsul tükənmişdir</span>
+                }
+
+                <div class="product-line-price">@productTotalPrice.ToString("0.00")</div>
+            </div>
+        }
+    }
+
+    <input type="hidden" value="@counter" id="basket-count" />
+    @if (TempData["Success"] != null)
+    {
+        <input type="hidden" id="basket-success-toaster" value="@TempData["Success"]" />
+    }
+
+    @if (Model.BasketItems.Count != 0)
+    {
+        <div class="totals">
+            <div class="totals-item totals-item-total">
+                <label>Total</label>
+                <div class="totals-value" id="cart-total">@(Model.TotalPrice.ToString("0.00"))</div>
+            </div>
+        </div>
+
+        <a asp-action="basketcheckout" asp-controller="order" class="checkout">Sifariş</a>
+    }
+    else
+    {
+        <span class="text-danger">Səbətiniz boşdur!</span>
+    }
+
+
+</div>

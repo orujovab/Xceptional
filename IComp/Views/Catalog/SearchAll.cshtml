@@ -1,0 +1,124 @@
+﻿@model PaginatedListDto<ProductGetDTO>
+@{
+    ViewData["Title"] = "Xceptional";
+    var temp = -1;
+    if (Model.PageIndex == 1)
+    {
+        temp = 0;
+    }
+    if (temp == Model.TotalPage)
+    {
+        temp = -2;
+    }
+
+}
+
+<main>
+    <!-- Home Page -->
+    <section id="main-home-page">
+        <div class="contentWrap">
+            <div class="container">
+                <div class="breadcrumb">5
+                    <ul class="breadcrumb-nav">
+                        <li class="nav-item"><a5 asp-action="index" asp-controller="home">Kompüter mağazası "iComp"</a5></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12">
+
+
+                        <!-- New Products start here  -->
+                        <div class="new-products">
+                            <div class="content-heading">
+                                <h3>Axtarış nəticəsi</h3>
+                                <br />
+                                <h3>Tapıldı (@ViewBag.ItemCount) məhsul</h3>
+                            </div>
+                            <div class="paginatoin-area">
+                                <ul class="pagination-box">
+
+                                    @if (Model.HasPrev)
+                                    {
+                                        <li>
+                                            <a class="Previous" asp-action="SearchAll" asp-route-page="@(Model.PageIndex - 1)" asp-route-searchString="@ViewBag.Str"><i class="fa-solid fa-chevron-left"></i></a>
+                                        </li>
+                                    }
+                                    @for (var i = 1; i <= 3; i++, temp++)
+                                    {
+                                        if ((Model.PageIndex + temp) != 0 && (Model.PageIndex + temp) != -1)
+                                        {
+                                            <li class="@(Model.PageIndex + temp == Model.PageIndex ? "active" : "" )"><a asp-action="SearchAll" asp-route-page="@i" asp-route-searchString="@ViewBag.Str" style="display:@((Model.PageIndex+temp)>Model.TotalPage?"none":"block")">@(Model.PageIndex+temp)</a></li>
+                                        }
+                                    }
+                                    @if (Model.HasNext)
+                                    {
+                                        <li><a class="Next" asp-action="SearchAll" asp-route-page="@(Model.PageIndex + 1)" asp-route-searchString="@ViewBag.Str"><i class="fa-solid fa-chevron-right"></i></a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="new-products-inner">
+                                <div class="row">
+                                    @if (Model.Items != null && Model.Items.Count != 0)
+                                    {
+
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                                <div class="new-products__item">
+                                                    <div class="new-products__item-card">
+                                                        <div class="item__card-header">
+                                                            <div class="product-photo">
+                                                                <img src="~/uploads/products/@item.ProductImages.FirstOrDefault(x => x.PosterStatus == true)?.Image" alt="">
+                                                            </div>
+                                                            <div class="product-title">
+                                                                <a asp-action="index" asp-controller="detail" asp-route-id="@item.Id">@item.Name</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item__card-body">
+                                                            <div class="product-desc text">
+                                                                <p>
+                                                                    @(item.Processor?.ProcessorSerie?.Name == null ? "" : item.Processor?.ProcessorSerie?.Name + "|")  @(item.ProdMemory?.MemoryCapacity?.Capacity == null ? "" : item.ProdMemory?.MemoryCapacity?.Capacity + "|") @(item.ProdMemory?.DDRType == null ? "" : item.ProdMemory?.DDRType + "|") @(item.SSD?.SSDCapacity?.Capacity == null? "" : item.SSD?.SSDCapacity?.Capacity + "SSD |")  @(item.HardDisc?.HDDCapacity?.Capacity == null? "" : item.HardDisc?.HDDCapacity?.Capacity + "HDD |")  @(item.Processor?.ModelName == null ? "" : item.Processor?.ModelName + "|")
+                                                                    @(item.VideoCard?.CoreSpeed == null ? "" : item.VideoCard?.CoreSpeed + "|") @(item.VideoCard?.MemoryCapacity==null? "" : item.VideoCard?.MemoryCapacity + "|") @(item.VideoCard?.VideoCardSerie?.Name==null? "" : item.VideoCard?.VideoCardSerie?.Name + " series |")  @(item.GraphCard == null ? "" : item.GraphCard + "|") @(item.MotherBoardSound == null ? "" : item.MotherBoardSound+ "|") @(item.Network == null ? "" : item.Network + "|")
+                                                                </p>
+                                                            </div>
+                                                            <div class="product-price">
+
+                                                                <span style="font-size:17px; display: inline-block;">@((item.DiscountPercent > 0 ? item.SalePrice*(1- item.DiscountPercent/100) : item.SalePrice).ToString("0.00"))<sup>azn</sup></span>
+                                                                @if (item.DiscountPercent > 0)
+                                                                {
+                                                                    <span style="text-decoration: line-through; color: #bab9b9; font-size:17px;display: inline-block;">@(item.SalePrice.ToString("0.00")) <sup>azn</sup></span>
+                                                                }
+                                                                <h6>Stokda : <span class="@(item.IsAvailable == true ? "text-success" : "text-danger")">@(item.IsAvailable == true ? "Var" : "Yox")</span></h6>
+                                                            </div>
+                                                            <div class="product-checkout">
+                                                                <a asp-action="addbasket" asp-controller="catalog" asp-route-id="@item.Id" class="btn btn-primary add-to-basket">Səbətə</a>
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Heç bir məhsul tapılmadı</span>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- New Products end here  -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+</main>
+

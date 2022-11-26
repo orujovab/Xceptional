@@ -1,0 +1,109 @@
+﻿@model ProdMotherBoardDto
+@{
+    ViewData["Title"] = "CreateMotherBoard";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1>Create</h1>
+            <form method="post" asp-action="CreateMotherBoard" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Enter Title">
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WarrantyPeriod">WarrantyPeriod</label>
+                    <input type="text" asp-for="WarrantyPeriod" class="form-control" placeholder="Enter WarrantyPeriod">
+                    <span class="text-danger" asp-validation-for="WarrantyPeriod"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GraphCard">GraphCard</label>
+                    <input type="text" asp-for="GraphCard" class="form-control" placeholder="Enter GraphCard">
+                    <span class="text-danger" asp-validation-for="GraphCard"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MotherBoardSound">MotherBoardSound</label>
+                    <input type="text" asp-for="MotherBoardSound" class="form-control" placeholder="Enter MotherBoardSound">
+                    <span class="text-danger" asp-validation-for="MotherBoardSound"></span>
+                </div>
+                 <div class="form-group">
+                    <label asp-for="Network">Network</label>
+                    <input type="text" asp-for="Network" class="form-control" placeholder="Enter Network">
+                    <span class="text-danger" asp-validation-for="Network"></span>
+                </div>
+                 <div class="form-group">
+                    <label asp-for="CostPrice">CostPrice</label>
+                    <input type="text" asp-for="CostPrice" class="form-control" placeholder="Enter CostPrice">
+                    <span class="text-danger" asp-validation-for="CostPrice"></span>
+                </div>
+                 <div class="form-group">
+                    <label asp-for="SalePrice">SalePrice</label>
+                    <input type="text" asp-for="SalePrice" class="form-control" placeholder="Enter SalePrice">
+                    <span class="text-danger" asp-validation-for="SalePrice"></span>
+                </div>
+                 <div class="form-group">
+                    <label asp-for="DiscountPercent">DiscountPercent</label>
+                    <input type="text" asp-for="DiscountPercent" class="form-control" placeholder="Enter DiscountPercent">
+                    <span class="text-danger" asp-validation-for="DiscountPercent"></span>
+                </div>
+                 <div class="form-group">
+                    <label asp-for="Count">Count</label>
+                    <input type="text" asp-for="Count" class="form-control" placeholder="Enter Count">
+                    <span class="text-danger" asp-validation-for="Count"></span>
+                </div>
+                 <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label asp-for="MotherBoardId">MotherBoard</label>
+                        <select class="form-control" asp-for="MotherBoardId" asp-items="@new SelectList(ViewBag.Motherboards,nameof(MotherBoard.Id),nameof(MotherBoard.ModelName))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="ProdTypeId">Product Types</label>
+                        <select class="form-control" asp-for="ProdTypeId" asp-items="@new SelectList(ViewBag.ProdTypes,nameof(ProdType.Id),nameof(ProdType.Name))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="DestinationId">Destionations</label>
+                        <select class="form-control" asp-for="DestinationId" asp-items="@new SelectList(ViewBag.Destinations,nameof(Destination.Id),nameof(Destination.Name))">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label asp-for="ColorId">Processors</label>
+                        <select class="form-control" asp-for="ColorId" asp-items="@new SelectList(ViewBag.Colors,nameof(Color.Id),nameof(Color.Name))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="CategoryId">Categories</label>
+                        <select class="form-control" asp-for="CategoryId" asp-items="@new SelectList(ViewBag.Categories,nameof(Category.Id),nameof(Category.Name))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="BrandId">Brands</label>
+                        <select class="form-control" asp-for="BrandId" asp-items="@new SelectList(ViewBag.Brands,nameof(Brand.Id),nameof(Brand.Name))">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PosterFile">PosterFile</label>
+                    <input class="form-control" asp-for="PosterFile" placeholder="Enter ImageFile">
+                    <span class="text-danger" asp-validation-for="PosterFile"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageFiles">Files</label>
+                    <input class="form-control" asp-for="ImageFiles" placeholder="Enter ImageFile">
+                    <span class="text-danger" asp-validation-for="ImageFiles"></span>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+

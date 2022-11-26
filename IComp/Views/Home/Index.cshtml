@@ -1,0 +1,150 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Xceptional home";
+    var temp = -1;
+    if (Model.Paginated.PageIndex == 1)
+    {
+        temp = 0;
+    }
+    if (temp == Model.Paginated.TotalPage)
+    {
+        temp = -2;
+    }
+}
+
+
+<main>
+    <!-- Home Page -->
+    <section id="main-home-page">
+        <div class="contentWrap">
+            <div class="container">
+                <div class="row">
+                    <!-- aside start -->
+                    <div class="col-lg-3">
+                        <div class="breadcrumb"></div>
+
+
+                    </div>
+                    <!-- aside end -->
+                    <div class="col-lg-12">
+
+
+
+                        <!-- Carousel end here -->
+                        <!-- Popular Brends -->
+
+                       
+                        <!-- Popular Categories start here -->
+                        <div class="popular-categories">
+                            <div class="popular-categories__content">
+                                <div class="content-heading">
+                                    <h2>Populyar kateqoriyalar</h2>
+                                </div>
+                                <div class="content-body">
+                                    <div class="popular-categories__list">
+                                        <div class="row">
+                                            @foreach (var item in Model.PopularCategories)
+                                            {
+                                                <div class="col-lg-2 col-md-6 col-sm-12">
+                                                    <!-- Category Item -->
+                                                <div class="popular-categories-item">
+                                                        <a asp-action="index" asp-controller="catalog" asp-route-categoryid="@item.Id">
+                                                            <img src="~/uploads/categories/@item.Image" alt="">
+                                                            <div class="category-name">
+                                                                <p>@item.Name</p>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <!-- Category Item -->
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Popular Categories end here -->
+                        <!-- New Products start here  -->
+                        <div class="new-products">
+                            <div class="content-heading">
+                                <h2>Yeni daxil olanlar</h2>
+                            </div>
+                            <div class="paginatoin-area">
+                                <ul class="pagination-box">
+
+                                    @if (Model.Paginated.HasPrev)
+                                    {
+                                        <li>
+                                            <a class="Previous" asp-action="index" asp-route-minprice="@ViewBag.FilterMinPrice" asp-route-maxprice="@ViewBag.FilterMaxPrice" asp-route-page="@(Model.Paginated.PageIndex - 1)" asp-route-processorserieid="@ViewBag.processorserieid" asp-route-videocardserieid="@ViewBag.videocardserieid" asp-route-motherboardid="@ViewBag.motherboardid" asp-route-prodtypeid="@ViewBag.prodtypeid" asp-route-memorycapacityid="@ViewBag.memorycapacityid" asp-route-brandid="@ViewBag.brandid" asp-route-destinationid="@ViewBag.destinationid" asp-route-categoryid="@ViewBag.categoryid" asp-route-hddcapacityid="@ViewBag.hddcapacityid" asp-route-sort="@ViewBag.sort"><i class="fa-solid fa-chevron-left"></i></a>
+                                        </li>
+                                    }
+                                    @for (var i = 1; i <= 3; i++, temp++)
+                                    {
+                                        if ((Model.Paginated.PageIndex + temp) != 0 && (Model.Paginated.PageIndex + temp) != -1)
+                                        {
+                                            <li class="@(Model.Paginated.PageIndex + temp == Model.Paginated.PageIndex ? "active" : "" )"><a asp-action="index" asp-route-minprice="@ViewBag.FilterMinPrice" asp-route-maxprice="@ViewBag.FilterMaxPrice" asp-route-page="@i" asp-route-processorserieid="@ViewBag.processorserieid" asp-route-videocardserieid="@ViewBag.videocardserieid" asp-route-motherboardid="@ViewBag.motherboardid" asp-route-prodtypeid="@ViewBag.prodtypeid" asp-route-memorycapacityid="@ViewBag.memorycapacityid" asp-route-brandid="@ViewBag.brandid" asp-route-destinationid="@ViewBag.destinationid" asp-route-categoryid="@ViewBag.categoryid" asp-route-hddcapacityid="@ViewBag.hddcapacityid" asp-route-sort="@ViewBag.sort" style="display:@((Model.Paginated.PageIndex+temp)>Model.Paginated.TotalPage?"none":"block")">@(Model.Paginated.PageIndex+temp)</a></li>
+                                        }
+                                    }
+                                    @if (Model.Paginated.HasNext)
+                                    {
+                                        <li><a class="Next" asp-action="index" asp-route-minprice="@ViewBag.FilterMinPrice" asp-route-maxprice="@ViewBag.FilterMaxPrice" asp-route-page="@(Model.Paginated.PageIndex + 1)" asp-route-processorserieid="@ViewBag.processorserieid" asp-route-videocardserieid="@ViewBag.videocardserieid" asp-route-motherboardid="@ViewBag.motherboardid" asp-route-prodtypeid="@ViewBag.prodtypeid" asp-route-memorycapacityid="@ViewBag.memorycapacityid" asp-route-brandid="@ViewBag.brandid" asp-route-destinationid="@ViewBag.destinationid" asp-route-categoryid="@ViewBag.categoryid" asp-route-hddcapacityid="@ViewBag.hddcapacityid" asp-route-sort="@ViewBag.sort"><i class="fa-solid fa-chevron-right"></i></a></li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="new-products-inner">
+                                <div class="row">
+                                    @foreach (var item in Model.Paginated.Items)
+                                    {
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="new-products__item">
+                                                <div class="new-products__item-card">
+                                                    <div class="item__card-header">
+                                                        <div class="product-photo">
+                                                            <img src="~/uploads/products/@item.ProductImages.FirstOrDefault(x => x.PosterStatus == true)?.Image" alt="">
+                                                        </div>
+                                                        <div class="product-title">
+                                                            <a asp-action="index" asp-controller="detail" asp-route-id="@item.Id">@item.Name</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item__card-body">
+                                                        <div class="product-desc text">
+                                                            <p>
+                                                                @(item.Processor?.ProcessorSerie?.Name == null ? "" : item.Processor?.ProcessorSerie?.Name + "|")  @(item.ProdMemory?.MemoryCapacity?.Capacity == null ? "" : item.ProdMemory?.MemoryCapacity?.Capacity + "|") @(item.ProdMemory?.DDRType == null ? "" : item.ProdMemory?.DDRType + "|") @(item.SSD?.SSDCapacity?.Capacity == null? "" : item.SSD?.SSDCapacity?.Capacity + "SSD |")  @(item.HardDisc?.HDDCapacity?.Capacity == null? "" : item.HardDisc?.HDDCapacity?.Capacity + "HDD |")  @(item.Processor?.ModelName == null ? "" : item.Processor?.ModelName + "|")
+                                                                @(item.VideoCard?.CoreSpeed == null ? "" : item.VideoCard?.CoreSpeed + "|") @(item.VideoCard?.MemoryCapacity==null? "" : item.VideoCard?.MemoryCapacity + "|") @(item.VideoCard?.VideoCardSerie?.Name==null? "" : item.VideoCard?.VideoCardSerie?.Name + " series |")  @(item.GraphCard == null ? "" : item.GraphCard + "|") @(item.MotherBoardSound == null ? "" : item.MotherBoardSound+ "|") @(item.Network == null ? "" : item.Network + "|")
+                                                            </p>
+                                                        </div>
+                                                        <div class="product-price">
+
+                                                            <span style="font-size:17px; display: inline-block;">@((item.DiscountPercent > 0 ? item.SalePrice*(1- item.DiscountPercent/100) : item.SalePrice).ToString("0.00"))<sup>azn</sup></span>
+                                                            @if (item.DiscountPercent > 0)
+                                                            {
+                                                                <span style="text-decoration: line-through; color: #bab9b9; font-size:17px;display: inline-block;">@(item.SalePrice.ToString("0.00")) <sup>azn</sup></span>
+                                                            }
+                                                            <h6>Stokda : <span class="@(item.IsAvailable == true ? "text-success" : "text-danger")">@(item.IsAvailable == true ? "Var" : "Yox")</span></h6>
+
+                                                        </div>
+                                                        <div class="product-checkout">
+                                                            <a asp-action="addbasket" asp-controller="catalog" asp-route-id="@item.Id" class="btn btn-primary add-to-basket">Səbətə</a>
+  
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!-- New Products end here  -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+</main>
+
+

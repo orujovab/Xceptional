@@ -1,0 +1,22 @@
+﻿@model AppUserLoginPostDto
+
+<form method="post" asp-action="Login" asp-controller="Account" enctype="multipart/form-data" id="loginForm">
+    <div class="form-group">
+        <label asp-for="UserName" style="font-size: 18px;">İstifadəçi Adı</label>
+        <input asp-for="UserName" class="form-control" id="inputUsername" placeholder="İstifadəçi adı daxil et">
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" style="font-size: 18px;">Şifrə</label>
+        <input asp-for="Password" class="form-control" id="inputPassword" placeholder="Şifrə">
+    </div>
+    <div class="form-group">
+        <label asp-for="IsPersistent" class="form-check-label"><input asp-for="IsPersistent" type="checkbox"> Remember me</label>
+        <span class="text-danger error-msg-box"></span>
+    </div>
+    <div class="d-flex justify-content-between" >
+        <a asp-action="register" asp-controller="account" style="padding:0px 0px 0px 10px">Qeydiyyat</a>
+        <a asp-action="forgotpassword" asp-controller="account" style="padding:0px 10px 0px 0px">Şifrəmi yenilə</a>
+    </div>
+    <button type="submit" class="btn btn-info" id="loginSubmit" style="margin:10px 0px 0px 0px">Daxil ol</button>
+</form>

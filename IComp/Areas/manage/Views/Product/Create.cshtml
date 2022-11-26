@@ -1,0 +1,215 @@
+﻿@model ProductPostDto
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1>Create</h1>
+            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Enter Title">
+                    <span class="text-danger" asp-validation-for="Name"></span>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label asp-for="SalePrice">SalePrice</label>
+                        <input type="text" asp-for="SalePrice" class="form-control" placeholder="Enter Price">
+                        <span class="text-danger" asp-validation-for="SalePrice"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="CostPrice">CostPrice</label>
+                        <input type="text" asp-for="CostPrice" class="form-control" placeholder="Enter Price">
+                        <span class="text-danger" asp-validation-for="CostPrice"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="DiscountPercent">DiscountPercent</label>
+                        <input type="text" asp-for="DiscountPercent" class="form-control" placeholder="Enter Price">
+                        <span class="text-danger" asp-validation-for="DiscountPercent"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="Count">Count</label>
+                        <input type="text" asp-for="Count" class="form-control" placeholder="Enter Count">
+                        <span class="text-danger" asp-validation-for="Count"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label asp-for="SoundType">SoundType</label>
+                        <input type="text" asp-for="SoundType" class="form-control" placeholder="Enter SoundType">
+                        <span class="text-danger" asp-validation-for="SoundType"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="InputPorts">InputPorts</label>
+                        <input type="text" asp-for="InputPorts" class="form-control" placeholder="Enter InputPorts">
+                        <span class="text-danger" asp-validation-for="InputPorts"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="USB">USB</label>
+                        <input type="text" asp-for="USB" class="form-control" placeholder="Enter USB">
+                        <span class="text-danger" asp-validation-for="USB"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="USBTypeC">USBTypeC</label>
+                        <input type="text" asp-for="USBTypeC" class="form-control" placeholder="Enter USBTypeC">
+                        <span class="text-danger" asp-validation-for="USBTypeC"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-3">
+                        <label asp-for="Network">Network</label>
+                        <input type="text" asp-for="Network" class="form-control" placeholder="Enter Network">
+                        <span class="text-danger" asp-validation-for="Network"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="PowerSupply">PowerSupply</label>
+                        <input type="text" asp-for="PowerSupply" class="form-control" placeholder="Enter PowerSupply">
+                        <span class="text-danger" asp-validation-for="PowerSupply"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="Weight">Weight</label>
+                        <input type="text" asp-for="Weight" class="form-control" placeholder="Enter Weight">
+                        <span class="text-danger" asp-validation-for="Weight"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label asp-for="WarrantyPeriod">WarrantyPeriod</label>
+                        <input type="text" asp-for="WarrantyPeriod" class="form-control" placeholder="Enter WarrantyPeriod">
+                        <span class="text-danger" asp-validation-for="WarrantyPeriod"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-lg-2">
+                        <label asp-for="IsAvailable">IsAvailable</label>
+                        <input asp-for="IsAvailable" class="form-control">
+                        <span class="text-danger" asp-validation-for="IsAvailable"></span>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label asp-for="IsNew">IsNew</label>
+                        <input asp-for="IsNew" class="form-control">
+                        <span class="text-danger" asp-validation-for="IsNew"></span>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label asp-for="IsFeatured">IsFeatured</label>
+                        <input asp-for="IsFeatured" class="form-control">
+                        <span class="text-danger" asp-validation-for="IsFeatured"></span>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label asp-for="IsPopular">IsPopular</label>
+                        <input asp-for="IsPopular" class="form-control">
+                        <span class="text-danger" asp-validation-for="IsPopular"></span>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label asp-for="HasBluetooth">HasBluetooth</label>
+                        <input asp-for="HasBluetooth" class="form-control">
+                        <span class="text-danger" asp-validation-for="HasBluetooth"></span>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label asp-for="HasWifi">HasWifi</label>
+                        <input asp-for="HasWifi" class="form-control">
+                        <span class="text-danger" asp-validation-for="HasWifi"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label asp-for="ProcessorId">Processors</label>
+                        <select class="form-control" asp-for="ProcessorId" asp-items="@(new SelectList(ViewBag.Processors,nameof(Processor.Id),nameof(Processor.ModelName)))">
+                            <option value="0">none</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="BrandId">Brands</label>
+                        <select class="form-control" asp-for="BrandId" asp-items="@(new SelectList(ViewBag.Brands,nameof(Brand.Id),nameof(Brand.Name)))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="ProdMemoryId">RAMs</label>
+                        <select class="form-control" asp-for="ProdMemoryId" asp-items="@(new SelectList(ViewBag.Memories,nameof(ProdMemory.Id),nameof(ProdMemory.ModelName)))">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label asp-for="CategoryId">Categories</label>
+                        <select class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories,nameof(Category.Id),nameof(Category.Name)))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="HardDiscId">HardDiscs</label>
+                        <select class="form-control" asp-for="HardDiscId" asp-items="@(new SelectList(ViewBag.HardDiscs,nameof(HardDisc.Id),nameof(HardDisc.ModelName)))">
+                            <option value="0">none</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="HardDiscId"></span>
+
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="SSDId">SSDs</label>
+                        <select class="form-control" asp-for="SSDId" asp-items="@(new SelectList(ViewBag.SSDs,nameof(SSD.Id),nameof(SSD.ModelName)))">
+                            <option value="0">none</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="SSDId"></span>
+
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="MotherBoardId">MotherBoards</label>
+                        <select class="form-control" asp-for="MotherBoardId" asp-items="@(new SelectList(ViewBag.MotherBoards,nameof(MotherBoard.Id),nameof(MotherBoard.ModelName)))">
+                            <option value="0">none</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="MotherBoardId"></span>
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-6">
+                        <label asp-for="ColorId">Color</label>
+                        <select class="form-control" asp-for="ColorId" asp-items="@(new SelectList(ViewBag.Colors,nameof(Color.Id),nameof(Color.Name)))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label asp-for="SoftwareId">Software</label>
+                        <select class="form-control" asp-for="SoftwareId" asp-items="@(new SelectList(ViewBag.Softwares,nameof(Software.Id),nameof(Software.Name)))">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label asp-for="VideoCardId">VideoCards</label>
+                        <select class="form-control" asp-for="VideoCardId" asp-items="@(new SelectList(ViewBag.VideoCards,nameof(VideoCard.Id),nameof(VideoCard.ModelName)))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="ProdTypeId">Product Types</label>
+                        <select class="form-control" asp-for="ProdTypeId" asp-items="@(new SelectList(ViewBag.ProdTypes,nameof(ProdType.Id),nameof(ProdType.Name)))">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label asp-for="DestinationId">Destionations</label>
+                        <select class="form-control" asp-for="DestinationId" asp-items="@(new SelectList(ViewBag.Destinations,nameof(Destination.Id),nameof(Destination.Name)))">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PosterFile">PosterFile</label>
+                    <input class="form-control" asp-for="PosterFile" placeholder="Enter ImageFile">
+                    <span class="text-danger" asp-validation-for="PosterFile"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageFiles">Files</label>
+                    <input class="form-control" asp-for="ImageFiles" placeholder="Enter ImageFile">
+                    <span class="text-danger" asp-validation-for="ImageFiles"></span>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
